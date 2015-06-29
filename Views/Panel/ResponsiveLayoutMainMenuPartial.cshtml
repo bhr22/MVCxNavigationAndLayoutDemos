@@ -1,0 +1,20 @@
+﻿@Html.DevExpress().Menu(menuSettings => {
+    menuSettings.Name = "mMain";
+    menuSettings.ControlStyle.CssClass = "main-menu";
+    menuSettings.Items.Add(menuItemSettings => {
+        menuItemSettings.Text = "Data";
+        menuItemSettings.NavigateUrl = "javascript:void(0)";
+    });
+    menuSettings.Items.Add(menuItemSettings => {
+        menuItemSettings.Text = "Settings";
+        menuItemSettings.NavigateUrl = "javascript:void(1)";
+    });
+    menuSettings.Items.Add(menuItemSettings => {
+        menuItemSettings.Text = "Profile";
+        menuItemSettings.NavigateUrl = "javascript:void(2)";
+    });
+    menuSettings.Items.Add(menuItemSettings => {
+        menuItemSettings.Text = "Help";
+        menuItemSettings.NavigateUrl = "javascript:void(3)";
+    });
+}).GetHtml()

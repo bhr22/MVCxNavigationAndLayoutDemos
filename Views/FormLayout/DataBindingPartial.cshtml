@@ -1,0 +1,61 @@
+﻿@model EditableEmployee
+           
+@Html.DevExpress().FormLayout(settings => {
+    settings.Name = "formLayout";
+    settings.AlignItemCaptionsInAllGroups = true;
+    
+    settings.Items.Add(i => i.EmployeeID, itemSettings => { 
+        itemSettings.Caption = "Select record";
+        
+        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+        var cbSettings = (ComboBoxSettings)itemSettings.NestedExtensionSettings;
+        cbSettings.Properties.ClientSideEvents.ValueChanged = "UpdateLayoutForm";
+        cbSettings.Properties.ValueType = typeof(int);
+        for(var i = 1; i <= 5; i++) {
+            cbSettings.Properties.Items.Add("Employee #" + i, i);
+        }
+    });
+    
+    settings.Items.AddEmptyItem();
+    
+    var infoGroupItem = settings.Items.AddGroupItem(itemSettings => {
+        itemSettings.Caption = "Personal Information";
+        itemSettings.ColCount = 2;
+    });
+    infoGroupItem.Items.Add(e => e.FirstName, itemSettings => {
+        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+        itemSettings.NestedExtensionSettings.Width = Unit.Pixel(170);
+    });
+    infoGroupItem.Items.Add(e => e.LastName, itemSettings => {
+        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+        itemSettings.NestedExtensionSettings.Width = Unit.Pixel(170);
+    });
+    infoGroupItem.Items.Add(e => e.BirthDate);
+    
+    var workGroupItem = settings.Items.AddGroupItem(itemSettings => {
+        itemSettings.Caption = "Work Information";
+        itemSettings.ColCount = 2;
+    });
+    workGroupItem.Items.Add(e => e.Title, itemSettings => {
+        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+        itemSettings.NestedExtensionSettings.Width = Unit.Pixel(170);
+    });
+    workGroupItem.Items.Add(e => e.HireDate);
+    workGroupItem.Items.Add(e => e.Notes, itemSettings => {
+        itemSettings.ColSpan = 2;
+        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+        itemSettings.NestedExtensionSettings.Width = Unit.Percentage(100);
+        itemSettings.NestedExtensionSettings.Height = Unit.Pixel(71);
+    });
+    
+    settings.Items.Add(itemSettings => {
+        itemSettings.ShowCaption = DefaultBoolean.False;
+        itemSettings.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+        itemSettings.Width = 150;
+        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+        var btnSettings = (ButtonSettings)itemSettings.NestedExtensionSettings;
+        btnSettings.Name = "applyButton";
+        btnSettings.Text = "Update Record";
+        btnSettings.UseSubmitBehavior = true;
+    });
+}).GetHtml()

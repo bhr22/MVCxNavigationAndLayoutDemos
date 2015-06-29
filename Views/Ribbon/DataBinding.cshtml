@@ -1,0 +1,4 @@
+﻿@Html.DevExpress().Ribbon(
+    settings => {
+        settings.Name = "ribbon";
+    }).BindToXML(HttpContext.Current.Server.MapPath("~/App_Data/MathInterface.xml"), "/MathInterface/*").GetHtml()

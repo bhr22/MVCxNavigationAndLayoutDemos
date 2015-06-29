@@ -1,0 +1,49 @@
+﻿@model Customer
+@Html.DevExpress().TextBoxFor(model => model.CompanyName, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "Company Name";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@Html.DevExpress().TextBoxFor(model => model.ContactName, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "Contact Name";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@Html.DevExpress().TextBoxFor(model => model.ContactTitle, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "Contact Title";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@Html.DevExpress().TextBoxFor(model => model.Country, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "Country";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@Html.DevExpress().TextBoxFor(model => model.City, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "City";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@Html.DevExpress().TextBoxFor(model => model.Address, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "Address";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@Html.DevExpress().TextBoxFor(model => model.Phone, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "Phone";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@Html.DevExpress().TextBoxFor(model => model.Fax, textBoxSettings => {
+    textBoxSettings.Properties.Caption = "Fax";
+    PrepareTextBoxSettings(textBoxSettings);
+}).GetHtml()
+
+@functions{
+    Action<TextBoxSettings> PrepareTextBoxSettings = (TextBoxSettings settings) => {
+        settings.ControlStyle.CssClass = "editor";
+        settings.Properties.RootStyle.CssClass = "editorContainer";
+        settings.Properties.CaptionCellStyle.CssClass = "editorCaption";
+        settings.ReadOnly = true;
+    };
+}

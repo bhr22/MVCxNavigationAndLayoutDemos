@@ -1,0 +1,117 @@
+﻿@model RegistrationForm
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+    
+    Action<MVCxFormLayoutItem> AuthorizationDataTextBoxSettingsMethod = (item) => {
+        item.NestedExtensionType = FormLayoutNestedExtensionItemType.TextBox;
+        var tbSettings = (TextBoxSettings)item.NestedExtensionSettings;
+        tbSettings.Properties.Password = tbSettings.Name.Contains("Password");
+        tbSettings.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+        tbSettings.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+        tbSettings.Properties.ValidationSettings.Display = Display.Dynamic;
+        tbSettings.ShowModelErrors = true;
+    };
+}
+
+@section AdditionalResources {
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+}
+
+<script type="text/javascript">
+$(document).ready(function () {
+    if(Boolean('@(ViewBag.SuccessValidation)'))
+        alert('You have successfully registered');
+});
+</script>
+
+
+@using (Html.BeginForm()){
+    @Html.DevExpress().FormLayout(settings => {
+        settings.Name = "registrationForm";
+        settings.AlignItemCaptionsInAllGroups = true;
+    
+        var registrationDataGroup = settings.Items.AddGroupItem(i => i.RegistrationData, itemSettings => {
+            itemSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+            itemSettings.SettingsItemCaptions.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+        });
+        registrationDataGroup.Items
+            .Add(itemSettings => { 
+                itemSettings.Caption = "Name";
+                itemSettings.CaptionSettings.AssociatedNestedExtensionName = "RegistrationData.FirstName"; 
+            })
+            .SetNestedContent(() => {
+                ViewContext.Writer.Write("<table><tr><td style=\"padding-right:5px;\">");
+                
+                Html.DevExpress().TextBoxFor(i => i.RegistrationData.FirstName, s => { 
+                    s.Width = 170;
+                    s.ShowModelErrors = true;
+                    s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                    s.Properties.ValidationSettings.Display = Display.Dynamic;
+                    s.Properties.ValidationSettings.ErrorText = "*";
+                }).Render();
+                
+                ViewContext.Writer.Write("</td><td>");
+                
+                Html.DevExpress().TextBoxFor(i => i.RegistrationData.LastName, s => { 
+                    s.Width = 170;
+                    s.ShowModelErrors = true;
+                    s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                    s.Properties.ValidationSettings.Display = Display.Dynamic;
+                }).Render();
+                
+                ViewContext.Writer.Write("</td></tr></table>");
+            });
+        registrationDataGroup.Items.Add(i => i.RegistrationData.Gender, itemSettings => {
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.RadioButtonList;
+            RadioButtonListSettings rbListSettings = (RadioButtonListSettings)itemSettings.NestedExtensionSettings;
+            rbListSettings.Properties.RepeatDirection = RepeatDirection.Horizontal;
+            rbListSettings.Properties.Items.Add("Male", 0);
+            rbListSettings.Properties.Items.Add("Female", 1);
+            rbListSettings.ControlStyle.Border.BorderStyle = BorderStyle.None;
+        });
+        registrationDataGroup.Items.Add(i => i.RegistrationData.Country, itemSettings => {
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+            ComboBoxSettings cbSettings = (ComboBoxSettings)itemSettings.NestedExtensionSettings;
+            cbSettings.Properties.DropDownStyle = DropDownStyle.DropDownList;
+            cbSettings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+            cbSettings.Properties.DataSource = RegistrationData.GetPossibleCountries();
+        });
+    
+        var authorizationDataGroup = settings.Items.AddGroupItem(i => i.AuthorizationData, itemSettings => {
+            itemSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+            itemSettings.SettingsItemCaptions.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+        });
+        authorizationDataGroup.Items.Add(i => i.AuthorizationData.Email, AuthorizationDataTextBoxSettingsMethod);
+        authorizationDataGroup.Items.Add(i => i.AuthorizationData.Password, AuthorizationDataTextBoxSettingsMethod);
+        authorizationDataGroup.Items.Add(i => i.AuthorizationData.ConfirmPassword, AuthorizationDataTextBoxSettingsMethod);
+
+        var submitGroup = settings.Items.AddGroupItem();
+        submitGroup.ShowCaption = DefaultBoolean.False;
+        submitGroup.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        submitGroup.SettingsItemCaptions.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+        submitGroup.Items.Add(itemSettings => itemSettings.Caption = " ").SetNestedContent(() => {
+            Html.DevExpress().Captcha(captchaSettings => {
+                captchaSettings.Name = "captcha";
+                captchaSettings.TextBox.Position = DevExpress.Web.Captcha.ControlPosition.Bottom;
+                captchaSettings.TextBox.ShowLabel = false;
+                captchaSettings.RefreshButton.Visible = false;
+            }).Render();
+        });
+        submitGroup.Items
+            .Add(itemSettings => { itemSettings.Caption = " "; })
+            .SetNestedContent("<span>By clicking \"Sign Up\", you agree to the <a href=\"javascript:;\">privacy policy</a> and the <a href=\"javascript:;\">terms of use</a></span>");
+        submitGroup.Items.AddEmptyItem().Height = 20;
+        submitGroup.Items.Add(itemSettings => {
+            itemSettings.Caption = " ";
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+            ButtonSettings btnSettings = (ButtonSettings)itemSettings.NestedExtensionSettings;
+            btnSettings.Name = "signUp";
+            btnSettings.Text = "Sign Up";
+            btnSettings.UseSubmitBehavior = true;
+            btnSettings.Width = Unit.Pixel(100);
+        });
+    }).GetHtml()
+}

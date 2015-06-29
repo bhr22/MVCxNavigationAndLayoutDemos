@@ -1,0 +1,49 @@
+﻿@model FullScreenViewerModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FullScreen Mode Viewer</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/FullScreenViewer.css")" />
+    @Html.DevExpress().GetStyleSheets( 
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
+    ) 
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }  
+    ) 
+</head>
+<body>
+    <div class="@(Model.IsFullScreen? "" : "viewer") mainContainer">
+        @Html.DevExpress().Panel(settings => {
+            settings.Name = "TopPanel";
+            settings.ControlStyle.CssClass = "topPanel";
+            settings.FixedPosition = PanelFixedPosition.WindowTop;
+            settings.Height = Unit.Pixel(14);
+            settings.SetContent(() => {
+                ViewContext.Writer.Write("<div class='resolutionSelector'>");
+                foreach (var resolution in FullScreenModeUtils.Resolutions) {
+                    Html.DevExpress().HyperLink(hlSettings => {
+                        hlSettings.NavigateUrl = Url.Action("Index", "FullScreenViewer", new { width = resolution.Width, height = resolution.Height, Url = Model.Url });
+                        hlSettings.Properties.Text = resolution.Name;
+                    }).Render();
+                }
+                ViewContext.Writer.Write("</div>");            
+            });
+        }).GetHtml()
+        <div class="qrcodeContainer" @(!Model.IsFullScreen? "style=width:" + Model.FullDeviceWidth+ "px" : "") id="QrcodeContainer">
+            <div class="qrcode" id="Qrcode">
+                <div>
+                    <a id="QrcodeLink" href="@Model.Url" target="_blank">
+                        <img id="QrcodeImg" src="@Html.Raw(Model.ImageUrlQrCode)" alt="QRCode" /></a>
+                </div>
+                <div class="qrcodeHint">
+                    View on a Tablet</div>
+            </div>
+        </div>
+        <div class="documentContainer" @(!Model.IsFullScreen? "style=width:" + Model.FullDeviceWidth + "px;height:"+ Model.FullDeviceHeight + "px":"") id="DocumentContainer">
+            <div class="documentFrame">
+                <iframe class="document" src='@Model.Url' id="Document"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

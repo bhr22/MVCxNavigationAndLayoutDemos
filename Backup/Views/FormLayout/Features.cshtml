@@ -1,0 +1,128 @@
+﻿@model FormLayoutFeaturesModel
+
+@functions{
+    public void AssignSettingsToComboBoxItem(MVCxFormLayoutItem itemSettings, Type enumType){
+        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.ComboBox;
+        var cbSettings = (ComboBoxSettings)itemSettings.NestedExtensionSettings;
+        foreach(var item in Enum.GetNames(enumType)) {
+            cbSettings.Properties.Items.Add(item);
+        }
+    }
+}
+
+@using(Html.BeginForm()){
+    <table>
+        <tr>
+            <td style="vertical-align: top; width: 100%;">
+                @Html.DevExpress().FormLayout(settings => {
+                    settings.Name = "formLayout";
+                    settings.EncodeHtml = false;
+                    var groupItem = settings.Items.AddGroupItem(itemSettings => {
+                        itemSettings.Caption = "Group Caption";
+                        itemSettings.SettingsItemHelpTexts.Position = HelpTextPosition.Bottom;
+                    });
+                    groupItem.Items.Add(m => m.Name).HelpText = "Please, enter your login name";
+                    groupItem.Items.Add(m => m.Email).HelpText = "Please, enter your e-mail";
+                    groupItem.Items.Add(m => m.Description, itemSettings => {
+                        itemSettings.HelpText = "Leave a little bit of information<br/>about yourself";
+                        itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+                        itemSettings.NestedExtensionSettings.Height = 50;
+                        itemSettings.NestedExtensionSettings.Width = Unit.Pixel(137);
+                    });
+
+                    FormLayoutFeaturesDemoOptions options = ViewBag.FeaturesDemoOptions;
+                    groupItem.GroupBoxDecoration = options.GroupSettingsGroupBoxDecoration;
+                    groupItem.ShowCaption = options.GroupSettingsShowCaption ? DefaultBoolean.True : DefaultBoolean.False;
+                    groupItem.SettingsItems.ShowCaption = options.ItemCaptionSettingsShowCaption ? DefaultBoolean.True : DefaultBoolean.False;
+                    groupItem.SettingsItemCaptions.Location = options.ItemCaptionSettingsLocation;
+                    groupItem.SettingsItemCaptions.HorizontalAlign = options.ItemCaptionSettingsHorizontalAlign;
+                    groupItem.SettingsItemCaptions.VerticalAlign = options.ItemCaptionSettingsVerticalAlign;
+                    groupItem.SettingsItemHelpTexts.Position = options.ItemHelpTextSettingsPosition;
+                    groupItem.SettingsItemHelpTexts.HorizontalAlign = options.ItemHelpTextSettingsHorizontalAlign;
+                    groupItem.SettingsItemHelpTexts.VerticalAlign = options.ItemHelpTextSettingsVerticalAlign;
+                    foreach(MVCxFormLayoutItem layoutItem in groupItem.Items) {
+                        if(!options.ItemHelpTextSettingsShowHelpText)
+                            layoutItem.HelpText = string.Empty;
+                    }
+                }).GetHtml()
+            </td>
+            <td style="vertical-align: top; width: 350px;">
+                @Html.DevExpress().FormLayout(settings => {
+                    settings.Name = "demoOptions";
+                    settings.AlignItemCaptionsInAllGroups = true;
+                    settings.SettingsItemCaptions.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+                    var groupSettingsItem = settings.Items.AddGroupItem(itemSettings => {
+                        itemSettings.Caption = "Group Settings";
+                        itemSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                    });
+                    groupSettingsItem.Items.Add(itemSettings => { 
+                        itemSettings.Caption = "Group Box Decoration";
+                        itemSettings.FieldName = "GroupSettingsGroupBoxDecoration";
+                        AssignSettingsToComboBoxItem(itemSettings, typeof(GroupBoxDecoration));
+                    });
+                    groupSettingsItem.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Show Caption";
+                        itemSettings.FieldName = "GroupSettingsShowCaption";
+                    });
+           
+                    var itemCaptionSettings = settings.Items.AddGroupItem(itemSettings => {
+                        itemSettings.Caption = "Item Caption Settings";
+                        itemSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                    });
+                    itemCaptionSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Show Caption";
+                        itemSettings.FieldName = "ItemCaptionSettingsShowCaption";
+                    });
+                    itemCaptionSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Location";
+                        itemSettings.FieldName = "ItemCaptionSettingsLocation";
+                        AssignSettingsToComboBoxItem(itemSettings, typeof(LayoutItemCaptionLocation));
+                    });
+                    itemCaptionSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Horizontal Align";
+                        itemSettings.FieldName = "ItemCaptionSettingsHorizontalAlign";
+                        AssignSettingsToComboBoxItem(itemSettings, typeof(FormLayoutHorizontalAlign));
+                    });
+                    itemCaptionSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Vertical Align";
+                        itemSettings.FieldName = "ItemCaptionSettingsVerticalAlign";
+                        AssignSettingsToComboBoxItem(itemSettings, typeof(FormLayoutVerticalAlign));
+                    });
+           
+                    var itemHelpTextSettings = settings.Items.AddGroupItem(itemSettings => {
+                        itemSettings.Caption = "Item HelpText Settings";
+                        itemSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                    });
+                    itemHelpTextSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Show HelpText";
+                        itemSettings.FieldName = "ItemHelpTextSettingsShowHelpText";
+                    });
+                    itemHelpTextSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Position";
+                        itemSettings.FieldName = "ItemHelpTextSettingsPosition";
+                        AssignSettingsToComboBoxItem(itemSettings, typeof(HelpTextPosition));
+                    });
+                    itemHelpTextSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Horizontal Align";
+                        itemSettings.FieldName = "ItemHelpTextSettingsHorizontalAlign";
+                        AssignSettingsToComboBoxItem(itemSettings, typeof(HelpTextHorizontalAlign));
+                    });
+                    itemHelpTextSettings.Items.Add(itemSettings => {
+                        itemSettings.Caption = "Vertical Align";
+                        itemSettings.FieldName = "ItemHelpTextSettingsVerticalAlign";
+                        AssignSettingsToComboBoxItem(itemSettings, typeof(HelpTextVerticalAlign));
+                    });
+               
+                    settings.Items.Add(itemSettigns => {
+                        itemSettigns.Caption = " ";
+                        itemSettigns.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+                        var btnSettigns = (ButtonSettings)itemSettigns.NestedExtensionSettings;
+                        btnSettigns.Name = "apply";
+                        btnSettigns.Text = "Apply";
+                        btnSettigns.UseSubmitBehavior = true;
+                    });
+                }).Bind(ViewBag.FeaturesDemoOptions).GetHtml()
+            </td>
+        </tr>
+    </table>
+}

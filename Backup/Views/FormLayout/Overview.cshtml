@@ -1,0 +1,17 @@
+﻿@model FormLayoutOverviewModel
+
+@Html.DevExpress().FormLayout(settings => {
+    settings.Name = "flOverview";
+    settings.Width = Unit.Pixel(540);
+
+    settings.Items.AddGroupItem(groupSettings => {
+        groupSettings.Caption = "Employees";
+        groupSettings.Items.Add(m => m.FirstName);
+        groupSettings.Items.Add(m => m.LastName);
+        groupSettings.Items.Add(m => m.Note, itemSettings => {
+            itemSettings.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+            itemSettings.NestedExtensionSettings.Height = 70;
+            itemSettings.NestedExtensionSettings.Width = Unit.Percentage(100);
+        }); 
+    });
+}).GetHtml()

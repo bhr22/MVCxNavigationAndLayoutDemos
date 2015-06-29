@@ -1,0 +1,107 @@
+﻿html, body, div.mainContainer
+{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    font: 14px Tahoma;
+}
+.viewer
+{
+    overflow: auto !important;
+}
+.topPanel
+{
+    background-color: white !important;
+    border-color: #c3c3c3 !important;
+    padding: 12px 0 !important;
+}
+.topPanel a, .topPanel a:hover, .topPanel a:visited
+{
+    color: #646464;
+}
+.resolutionSelector
+{
+    width: 400px;
+    margin: 0 auto;
+}
+.resolutionSelector a
+{
+    margin-right: 12px;
+}
+.documentContainer, .documentFrame, .document
+{
+    width: 100%;
+    height: 100%;
+}
+.viewer .documentContainer, .documentFrame, .document
+{
+    box-sizing: border-box;
+}
+.documentContainer
+{
+    margin-top: -30px;
+    padding-top: 30px;
+    display: block;
+}
+.viewer .documentContainer
+{
+    border: 2px solid #c3c3c3;
+    border-radius: 30px;
+    margin: 30px auto;
+    padding: 2px;
+}
+.viewer .documentFrame
+{
+    border: 1px solid #dbdbdb;
+    border-radius: 26px;
+    padding: 32px;
+}
+.document
+{
+    border: 0;
+    padding: 1px 0 0;
+}
+.viewer .document
+{
+    border: 2px solid #c3c3c3;
+    padding: 1px;
+}
+.qrcodeContainer
+{
+    margin: 0 auto;
+    padding: 40px 0;
+    height: 140px;
+    margin-bottom: -230px;
+    display: none;
+}
+.viewer .qrcodeContainer
+{
+    display: block;
+}
+.qrcode
+{
+    background-color: white;
+    width: 82px;
+    height: 82px;
+    margin-right: -140px;
+    float: right;
+}
+.qrcode img
+{
+    border: 1px solid #c3c3c3;
+    padding: 2px;
+    
+    width: 82px;
+    height: 82px;
+}
+.qrcodeHint
+{
+    padding: 10px 0 0;
+    margin: 0 -10px;
+    color: #a6a6a6;
+    font: 12px Tahoma;
+    text-align: center;
+}

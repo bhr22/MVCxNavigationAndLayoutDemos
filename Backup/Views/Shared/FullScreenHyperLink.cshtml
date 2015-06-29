@@ -1,0 +1,48 @@
+﻿@{
+    string Controller = ViewData["Controller"].ToString();
+    string Action = ViewData["Action"].ToString();
+    string TargetUrl = Url.Action(Action, Controller);
+    bool IsFullScreenModeOnly = ViewData["FullScreenModeOnly"] != null ? bool.Parse(ViewData["FullScreenModeOnly"].ToString()) : false;
+}
+<div class="fullscreenlinksContainer">
+    @if (!IsFullScreenModeOnly) {
+        @Html.DevExpress().Label(settings => {
+            settings.Name = "lblHint";
+            settings.Text = "Please click one of the following links to open the demonstration page in the corresponding resolution:";
+        }).GetHtml()
+        <div class="links">
+            <div class="link">
+                <a id="hlQrcode" href="@TargetUrl" target="_blank" class="qrcode">
+                    <img id="imgQrcode" src="@Html.Raw(FullScreenModeUtils.GetImageUrlQrCode(TargetUrl))" alt="QRCode" />
+                </a>
+            </div>
+            @foreach (var resolution in FullScreenModeUtils.Resolutions) {
+                <div class="link">
+                    @{ string FullScreenViewerUrl = Url.Action("Index", "FullScreenViewer", new { Url = TargetUrl, width = resolution.Width, height = resolution.Height }); }
+                    @Html.DevExpress().HyperLink(settings => {
+                        settings.NavigateUrl = FullScreenViewerUrl;
+                        settings.Properties.ImageUrl = string.Format("~/Content/ResolutionIcons/{0}.png", resolution.Name);
+                        settings.Properties.Target = "_blank";
+                    }).GetHtml()
+                    <br />
+                    @Html.DevExpress().HyperLink(settings => {
+                        settings.NavigateUrl = FullScreenViewerUrl;
+                        settings.Properties.Text = resolution.Name;
+                        settings.Properties.Target = "_blank";
+                    }).GetHtml()
+                </div>
+            }
+        </div>
+    }
+    else {
+        <a id="hlQrcodeFS" href="@TargetUrl" target="_blank" class="qrcode" >
+            <img id="imgQrcodeFS" src="@Html.Raw(FullScreenModeUtils.GetImageUrlQrCode(TargetUrl))" alt="QRCode" />
+        </a>
+        <br />
+        @Html.DevExpress().HyperLink(settings => {
+            settings.NavigateUrl = TargetUrl;
+            settings.Properties.Target = "_blank";
+            settings.Properties.Text = "Please click here to open the demonstration page in the fullscreen mode";
+        }).GetHtml()
+    }
+</div>

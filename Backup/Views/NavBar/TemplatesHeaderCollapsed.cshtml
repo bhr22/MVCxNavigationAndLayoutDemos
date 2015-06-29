@@ -1,0 +1,11 @@
+﻿<div class="groupTitle">
+    <div style="float:left; padding:3px 0px">@((NavBarGroup)Model).Text</div>
+    <div style="float:right; margin-left: 4px;">
+        <img alt="" src="@Url.Content("~/Content/NavBar/Lessons/bCollapse.gif")" style="margin-bottom:3px; width:21px; height:21px; display: block;" />
+    </div>
+    <div style="float:right">
+        <a href="@Url.Content(((NavBarGroup)Model).NavigateUrl)" target="_blank" onclick="return DXDemo.ShowScreenshotWindow(event, this);">
+            <img alt="" src="@Url.Content("~/Content/NavBar/Lessons/bWatchCollapsed.gif")" style="margin-bottom:3px; width:71px; height:21px; display: block;" />
+        </a>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿@Html.DevExpress().Menu(settings => {
+    settings.Name = "mOverview";
+    
+    settings.Items.Add(item => {
+        item.Text = "Home";
+        item.Image.Url = "~/Content/Menu/ButtonHome.png";
+        item.Image.Width = Unit.Pixel(22);
+        item.Image.Height = Unit.Pixel(22);
+        item.Items.Add("News");
+        item.Items.Add("Contact Us");
+    });
+    settings.Items.Add(item => {
+        item.Text = "Profile";
+        item.Image.Url = "~/Content/Menu/BO_Users_Large.png";
+        item.Image.Width = Unit.Pixel(22);
+        item.Image.Height = Unit.Pixel(22);
+        item.Items.Add("Change Password");
+    });
+    settings.Items.Add(item => {
+        item.Text = "Clients";
+        item.Image.Url = "~/Content/Menu/BO_Organizations_Large.png";
+        item.Image.Width = Unit.Pixel(22);
+        item.Image.Height = Unit.Pixel(22);
+    });
+    settings.Items.Add(item => {
+        item.Text = "Reports";
+        item.Image.Url = "~/Content/Menu/BO_Reports_Large.png";
+        item.Image.Width = Unit.Pixel(22);
+        item.Image.Height = Unit.Pixel(22);
+    });
+}).GetHtml()

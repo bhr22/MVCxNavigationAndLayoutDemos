@@ -1,0 +1,111 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $("#cbClientVisible").click(
+            function () {
+                tvClientSideAPI.SetVisible($("#cbClientVisible").prop("checked"));
+            }
+        );
+        $("#cmbNodes").change(
+            function () {
+                ShowProperties();
+            }
+        );
+        $("#cbEnabled").click(
+            function () {
+                GetCurrentNode().SetEnabled($("#cbEnabled").prop("checked"));
+                ShowProperties();
+            }
+        );
+        $("#cbVisible").click(
+            function () {
+                GetCurrentNode().SetVisible($("#cbVisible").prop("checked"));
+                ShowProperties();
+            }
+        );
+        $("#cbSelected").click(
+            function () {
+                tvClientSideAPI.SetSelectedNode($("#cbSelected").prop("checked") ? GetCurrentNode() : null);
+                ShowProperties();
+            }
+        );
+        $("#cbChecked").click(
+            function () {
+                GetCurrentNode().SetChecked($("#cbChecked").prop("checked"));
+                ShowProperties();
+            }
+        );
+        $("#cbExpanded").click(
+            function () {
+                GetCurrentNode().SetExpanded($("#cbExpanded").prop("checked"));
+                ShowProperties();
+            }
+        );
+        FillNodesCombo();
+        ShowProperties();
+    });
+    function GetCurrentNode() {
+        return tvClientSideAPI.GetNodeByName($("#cmbNodes").val());
+    }
+    function OnTreeViewCheckedChanged(s, e) {
+        ShowProperties();
+    }
+    function OnTreeViewExpandedChanged(s, e) {
+        ShowProperties();
+    }
+    function OnTreeViewNodeClick(s, e) {
+        $("#cmbNodes").val(e.node.name);
+        ShowProperties();
+    }
+    function FillNodesCombo() {
+        $("#cmbNodes").html("");
+        FillNodesComboByNode(tvClientSideAPI.GetRootNode());
+        $("#cmbNodes").attr("selectedIndex", 1);
+    }
+    function FillNodesComboByNode(node) {
+        for (var i = 0; i < node.GetNodeCount(); i++) {
+            var childNode = node.GetNode(i);
+            $("#cmbNodes").append("<option value=\"" + childNode.name + "\">" + childNode.GetText() + "</option>");
+            FillNodesComboByNode(childNode);
+        }
+    }
+    function ShowProperties() {
+        $("#cbClientVisible").prop("checked", tvClientSideAPI.GetVisible());
+        $("#cbEnabled").prop("checked", !GetCurrentNode() ? false : GetCurrentNode().GetEnabled());
+        $("#cbVisible").prop("checked", !GetCurrentNode() ? false : GetCurrentNode().GetVisible());
+        $("#cbSelected").prop("checked", !GetCurrentNode() ? false : tvClientSideAPI.GetSelectedNode() == GetCurrentNode());
+        $("#cbChecked").prop("checked", !GetCurrentNode() ? false : GetCurrentNode().GetChecked());
+        $("#cbExpanded").prop("checked", !GetCurrentNode() ? false : GetCurrentNode().GetExpanded());
+    }
+</script>
+<div class="vertComponentContainer">
+    @Html.DevExpress().TreeView(
+        settings => {
+            settings.Name = "tvClientSideAPI";
+            settings.AllowSelectNode = true;
+            settings.AllowCheckNodes = true;
+            settings.CheckNodesRecursive = true;
+            settings.Width = 250;
+
+            settings.ClientSideEvents.NodeClick = "OnTreeViewNodeClick";
+            settings.ClientSideEvents.ExpandedChanged = "OnTreeViewExpandedChanged";
+            settings.ClientSideEvents.CheckedChanged = "OnTreeViewCheckedChanged";
+
+            settings.PreRender = (source, e) => {
+                ASPxTreeView treeView = (ASPxTreeView)source;
+                treeView.ExpandAll();
+            };
+        }).BindToXML(Server.MapPath("~/App_Data/ChemicalElements.xml")).GetHtml()
+</div>
+<div id="treeViewClientSideAPIPanel" class="vertOptionsPanel" style="height:285px;">
+    <div><input type="checkbox" id="cbClientVisible" /><label class="checkBox" for="cbClientVisible">ClientVisible</label></div>
+    <div><label>&nbsp;</label></div>
+    <div><label for="cmbNodes">Choose node:</label>
+    <select id="cmbNodes">
+        <option value="Item">Item</option>
+    </select></div>
+    <div><label>&nbsp;</label><input type="checkbox" id="cbEnabled" /><label class="checkBox" for="cbEnabled">Enabled</label></div>
+    <div><label>&nbsp;</label><input type="checkbox" id="cbVisible" /><label class="checkBox" for="cbVisible">Visible</label></div>
+    <div><label>&nbsp;</label><input type="checkbox" id="cbSelected" /><label class="checkBox" for="cbSelected">Selected</label></div>
+    <div><label>&nbsp;</label><input type="checkbox" id="cbChecked" /><label class="checkBox" for="cbChecked">Checked</label></div>
+    <div><label>&nbsp;</label><input type="checkbox" id="cbExpanded" /><label class="checkBox" for="cbExpanded">Expanded</label></div>
+</div>

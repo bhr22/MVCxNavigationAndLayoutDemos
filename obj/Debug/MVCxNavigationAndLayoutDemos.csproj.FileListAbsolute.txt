@@ -1,0 +1,6 @@
+C:\Users\Public\Documents\DevExpress Demos 14.2\Components\ASP.NET\CS\MVCxNavigationAndLayoutDemos\obj\Debug\MVCxNavigationAndLayoutDemos.csprojResolveAssemblyReference.cache
+C:\Users\Public\Documents\DevExpress Demos 14.2\Components\ASP.NET\CS\MVCxNavigationAndLayoutDemos\bin\DevExpress.Web.Demos.MVCxNavigationAndLayoutDemos.dll.config
+C:\Users\Public\Documents\DevExpress Demos 14.2\Components\ASP.NET\CS\MVCxNavigationAndLayoutDemos\bin\DevExpress.Web.Demos.MVCxNavigationAndLayoutDemos.dll
+C:\Users\Public\Documents\DevExpress Demos 14.2\Components\ASP.NET\CS\MVCxNavigationAndLayoutDemos\bin\DevExpress.Web.Demos.MVCxNavigationAndLayoutDemos.pdb
+C:\Users\Public\Documents\DevExpress Demos 14.2\Components\ASP.NET\CS\MVCxNavigationAndLayoutDemos\obj\Debug\DevExpress.Web.Demos.MVCxNavigationAndLayoutDemos.dll
+C:\Users\Public\Documents\DevExpress Demos 14.2\Components\ASP.NET\CS\MVCxNavigationAndLayoutDemos\obj\Debug\DevExpress.Web.Demos.MVCxNavigationAndLayoutDemos.pdb

@@ -1,0 +1,14 @@
+﻿@{
+    var xmlElement = (((NavBarGroup)Model).DataItem as IHierarchyData).Item as System.Xml.XmlElement;   
+}
+<table style="width: 100%; height: 110px;">
+    <tr>
+        <td style="vertical-align: top;">
+            <a href="@Url.Content(xmlElement.Attributes["NavigateUrl"].Value)" target="_blank" onclick="return DXDemo.ShowScreenshotWindow(event, this);">
+                <img alt="" src="@Url.Content(xmlElement.Attributes["ImageUrl"].Value)" border="0" />
+            </a>
+        </td>
+        <td><div class="spacer" style="width: 10px;"></div></td>
+        <td style="vertical-align: top; width: 100%;">@Html.Raw(xmlElement.InnerXml)</td>
+    </tr>
+</table>
